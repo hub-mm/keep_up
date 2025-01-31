@@ -1,0 +1,43 @@
+<!-- ./web_app/templates/index.html -->
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Home</title>
+</head>
+<body>
+<div class="calendar-header">
+    <button> < </button>
+    <p>{{ month_name }}</p>
+    <button> > </button>
+</div>
+<div class="calendar">
+    <div class="day-name">
+        <p>Mon</p>
+        <p>Tue</p>
+        <p>Wed</p>
+        <p>Thu</p>
+        <p>Fri</p>
+        <p>Sat</p>
+        <p>Sun</p>
+    </div>
+    <div class="calendar-body" style="grid-template-columns: repeat({{ num_of_weeks }}, 30px);">
+        {% for weekday_row in month_layout %}
+        {% for day in weekday_row %}
+        {% if day == 0 %}
+        <div class="hidden">
+            <div class="hidden-day"></div>
+        </div>
+        {% else %}
+        <div class="visible">
+            <div class="day-cell"></div>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% endfor %}
+    </div>
+</div>
+</body>
+</html>
