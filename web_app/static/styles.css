@@ -70,6 +70,7 @@ body {
 .dropdown a {
     all: unset;
     color: rgb(255, 255, 255);
+    padding: 5px 0;
 }
 
 .dropdown-menu a:hover {
@@ -306,4 +307,82 @@ body {
 
 .month-year:hover {
     background-color: rgba(200, 200, 200, 0.2);
+}
+
+.todo-container {
+    width: 90vw;
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.todo-title {
+    background-color: rgba(50, 50, 50, .7);
+    color: rgb(255, 255, 255);
+    padding: 5px 10px;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.todo_list {
+    color:rgb(255, 255, 255);
+    background-color: rgba(50, 50, 50, .4);
+    width: 85vw;
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+    padding: 10px 0;
+    gap: 15px;
+}
+
+.todo_list p {
+    padding: 0 5px;
+}
+
+.todo_list input[type=text] {
+    all: unset;
+    background-color: rgba(100, 100, 100, .2);
+    height: 25px;
+    width: 95%;
+    border-radius: 5px;
+    cursor: cursor;
+    margin-left: 15px;
+    padding-left: 5px;
+}
+
+.task-container {
+    display: flex;
+}
+
+.task-container p {
+    width: 90%;
+    padding: 5px 0;
+}
+
+.task-container form {
+    all: unset;
+    width: 10%;
+    padding: 5px 0;
+}
+
+.delete-task {
+    all: unset;
+    background-color: rgba(150, 150, 150, .2);
+    color: rgb(255, 20, 57);
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    width: 40px;
+    border-radius: 5px;
+    padding: 0 5px;
+    cursor: pointer;
+}
+
+.task {
+    color: rgb(255, 255, 255);
+    padding: 0 10px;
 }

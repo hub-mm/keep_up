@@ -1,6 +1,7 @@
 # ./web_app/app.py
 from scripts.build_calendar import CalendarBuild
-from flask import Flask, render_template, url_for, redirect, session
+from scripts.build_todo import TodoBuild
+from flask import Flask, render_template, url_for, redirect, session, request
 from datetime import datetime
 
 
@@ -30,6 +31,8 @@ def home():
     year_layout = calendar.get_layout_year()
     num_of_weeks = len(month_layout[0])
 
+    todo_list = TodoBuild.todo_list
+
     return render_template(
         'index.html',
         month_name = month_name,
@@ -40,7 +43,8 @@ def home():
         current_year = current_year,
         month_layout=month_layout,
         num_of_weeks=num_of_weeks,
-        year_layout=year_layout
+        year_layout=year_layout,
+        todo_list=todo_list
     )
 
 @app.route('/prev_month', methods=['POST'])
@@ -87,6 +91,18 @@ def year_display():
 @app.route('/month_display', methods=['POST'])
 def month_display():
     session['month_display'] = True
+    return redirect(url_for('home'))
+
+@app.route('/new_task', methods=['POST'])
+def new_task():
+    task = request.form.get('task', '')
+    TodoBuild(task)
+    return redirect(url_for('home'))
+
+@app.route('/delete_task', methods=['POST'])
+def delete_task():
+    task = request.form.get('task', '')
+    TodoBuild.delete_task(task)
     return redirect(url_for('home'))
 
 if __name__ == '__main__':

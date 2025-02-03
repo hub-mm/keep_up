@@ -153,5 +153,35 @@
         {% endif %}
     </div>
 </div>
+<div class="todo-container">
+    <div class="todo-title">
+        <h2>Todo List</h2>
+    </div>
+    <div class="todo_list">
+        {% if not todo_list %}
+        <p>You have no tasks, add one to get started.</p>
+        <form action="{{ url_for('new_task') }}" method="POST">
+            <input type="text" name="task" class="add-task" placeholder="New Task">
+        </form>
+        {% else %}
+        <ul>
+            {% for task in todo_list %}
+            <li class="task">
+                <div class="task-container">
+                    <p>{{ todo_list[task] }}</p>
+                    <form action="{{ url_for('delete_task') }}" method="POST">
+                        <input type="hidden" name="task" value="{{ todo_list[task] }}">
+                        <input type="submit" class="delete-task" value="X">
+                    </form>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        <form action="{{ url_for('new_task') }}" method="POST">
+            <input type="text" name="task" class="add-task" placeholder="New Task">
+        </form>
+        {% endif %}
+    </div>
+</div>
 </body>
 </html>
