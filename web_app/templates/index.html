@@ -8,35 +8,130 @@
     <title>Home</title>
 </head>
 <body>
-<div class="calendar-header">
-    <button> < </button>
-    <p>{{ month_name }}</p>
-    <button> > </button>
-</div>
-<div class="calendar">
-    <div class="day-name">
-        <p>Mon</p>
-        <p>Tue</p>
-        <p>Wed</p>
-        <p>Thu</p>
-        <p>Fri</p>
-        <p>Sat</p>
-        <p>Sun</p>
-    </div>
-    <div class="calendar-body" style="grid-template-columns: repeat({{ num_of_weeks }}, 30px);">
-        {% for weekday_row in month_layout %}
-        {% for day in weekday_row %}
-        {% if day == 0 %}
-        <div class="hidden">
-            <div class="hidden-day"></div>
+<div class="calendar-container">
+    <div class="calendar-header-container">
+        {% if session.month_display %}
+        <div class="calendar-header">
+            <form action="{{ url_for('prev') }}" method="POST">
+                <button type="submit">&lt</button>
+            </form>
+            <p>{{ month_name }} {{ year }}</p>
+            <form action="{{ url_for('next') }}" METHOD="POST">
+                <button type="submit">&gt</button>
+            </form>
         </div>
         {% else %}
-        <div class="visible">
-            <div class="day-cell"></div>
+        <div class="calendar-header">
+            <form action="{{ url_for('prev') }}" method="POST">
+                <button type="submit">&lt</button>
+            </form>
+            <p>{{ year }}</p>
+            <form action="{{ url_for('next') }}" METHOD="POST">
+                <button type="submit">&gt</button>
+            </form>
         </div>
         {% endif %}
-        {% endfor %}
-        {% endfor %}
+    </div>
+    <div class="calendar">
+        <div class="day-name">
+            <p>Mon</p>
+            <p>Tue</p>
+            <p>Wed</p>
+            <p>Thu</p>
+            <p>Fri</p>
+            <p>Sat</p>
+            <p>Sun</p>
+        </div>
+        {% if session.month_display %}
+        <div class="calendar-body-month" style="grid-template-columns: repeat({{ num_of_weeks }}, 30px);">
+            {% for weekday_row in month_layout %}
+            {% for day in weekday_row %}
+            {% if day == 0 %}
+            <div class="hidden">
+                <div class="hidden-day"></div>
+            </div>
+            {% else %}
+            <div class="visible">
+                {% if current_day == day and current_month == month_num and current_year == year %}
+                <div class="current-day-cell">
+                    <div class="day-info-div">
+                        <span class="day-info" style="border-radius: 5px;">{{ day }}/{{ month_num }}/{{ year }}</span>
+                    </div>
+                </div>
+                {% else %}
+                <div class="day-cell">
+                    <div class="day-info-div">
+                        <span class="day-info" style="border-radius: 5px;">{{ day }}/{{ month_num }}/{{ year }}</span>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="calendar-body-year">
+            {% for layout_month in year_layout %}
+            {% set month_index = loop.index %}
+            <div class="year-month">
+                <div class="year-month-grid" style="grid-template-columns: repeat({{ layout_month[0]|length }}, 15px);">
+                    {% for weekday_row in layout_month %}
+                    {% for day in weekday_row %}
+                    {% if day == 0 %}
+                    <div class="hidden-year">
+                        <div class="hidden-day-year"></div>
+                    </div>
+                    {% else %}
+                    <div class="visible-year">
+                        {% if current_day == day and current_month == month_index and current_year == year %}
+                        <div class="current-day-cell-year">
+                            <div class="day-info-div">
+                            <span class="day-info"
+                                  style="border-radius: 2px;">{{ day }}/{{ month_index }}/{{ year }}</span>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="day-cell-year">
+                            <div class="day-info-div">
+                            <span class="day-info"
+                                  style="border-radius: 2px;">{{ day }}/{{ month_index }}/{{ year }}</span>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                    {% endfor %}
+                    <div class="month-name" style="width: {{ (layout_month[0]|length * 15) - 5 }}px">
+                        {% set months_nums = {
+                        1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr',
+                        5: 'May', 6: 'Jun', 7: 'Jul', 8: 'Aug',
+                        9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dec'
+                        }
+                        %}
+                        <p>{{ months_nums[month_index] }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    <div class="calendar-header-container">
+        {% if session.month_display %}
+        <form action="{{ url_for('year_display') }}" method="POST">
+            <div class="month-year">
+                <button type="submit">Year</button>
+            </div>
+        </form>
+        {% else %}
+        <form action="{{ url_for('month_display') }}" method="POST">
+            <div class="month-year">
+                <button type="submit">Month</button>
+            </div>
+        </form>
+        {% endif %}
     </div>
 </div>
 </body>
