@@ -12,9 +12,17 @@ class CalendarBuild:
         self.num_of_days = calendar.monthrange(yy, mm)[1]
         self.month_layout = []
 
-    def get_layout(self):
+    def get_layout_month(self):
         weeks = calendar.monthcalendar(self.yy, self.mm)
         vertical_layout = list(map(list, zip(*weeks)))
+
+        return vertical_layout
+
+    def get_layout_year(self):
+        vertical_layout = []
+        for month in range(1, 13):
+            weeks = calendar.monthcalendar(self.yy, month)
+            vertical_layout.append(list(map(list, zip(*weeks))))
 
         return vertical_layout
 
