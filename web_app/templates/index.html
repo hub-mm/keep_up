@@ -8,6 +8,25 @@
     <title>Home</title>
 </head>
 <body>
+<div class="header">
+    <div class="dropdown">
+        <button class="dropdown-button">Menu</button>
+        <div class="dropdown-menu">
+            <a href="#">Job Applications</a>
+            <a href="#">To Do</a>
+            <a href="#">Habits</a>
+            <a href="#">Info</a>
+        </div>
+    </div>
+    <div class="title">
+        <h1>Keep Up</h1>
+    </div>
+    <div class="sign-in">
+        <form>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</div>
 <div class="calendar-container">
     <div class="calendar-header-container">
         {% if session.month_display %}
