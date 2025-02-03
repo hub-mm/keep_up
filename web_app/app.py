@@ -1,4 +1,5 @@
 # ./web_app/app.py
+from config import SECRET_KEY
 from scripts.build_calendar import CalendarBuild
 from scripts.build_todo import TodoBuild
 from flask import Flask, render_template, url_for, redirect, session, request
@@ -6,7 +7,7 @@ from datetime import datetime
 
 
 app = Flask(__name__)
-app.secret_key = 'secret_key'
+app.secret_key = SECRET_KEY
 
 @app.route('/home', methods=['GET'])
 def home():
@@ -106,4 +107,4 @@ def delete_task():
     return redirect(url_for('home'))
 
 if __name__ == '__main__':
-    app.run(port=8000, debug=True)
+    app.run(port=8000, debug=False)
