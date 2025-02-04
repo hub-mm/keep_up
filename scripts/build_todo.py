@@ -1,19 +1,48 @@
 # ./scripts/build_todo.py
+import uuid
+
+
 class TodoBuild:
     todo_list = {}
-    todo_counter = 0
+    todo_complete = {}
 
     def __init__(self, task):
         self.task = task
-        TodoBuild.todo_list[TodoBuild.todo_counter] =  self.task
-        TodoBuild.todo_counter += 1
+        self.id = uuid.uuid4()
+        TodoBuild.todo_list[self.id] =  self.task
 
     @classmethod
     def delete_task(cls, task):
-        try:
-            values = list(cls.todo_list.values())
-            values.remove(task)
-            cls.todo_list = {i: v for i, v in enumerate(values)}
-            cls.todo_counter = len(cls.todo_list)
-        except ValueError:
+        found_key = None
+        for key, val in cls.todo_list.items():
+            if val == task:
+                found_key = key
+                break
+        if found_key is not None:
+            del cls.todo_list[found_key]
+            return found_key
+        else:
+            print('Task not found.')
+            return None
+
+    @classmethod
+    def delete_task_complete(cls, task):
+        found_key = None
+        for key, val in cls.todo_complete.items():
+            if val == task:
+                found_key = key
+                break
+        if found_key is not None:
+            del cls.todo_complete[found_key]
+            return found_key
+        else:
+            print('Task not found.')
+            return None
+
+    @classmethod
+    def complete_task(cls, task):
+        key = cls.delete_task(task)
+        if key is not None:
+            cls.todo_complete[key] = task
+        else:
             print('Task not found.')
