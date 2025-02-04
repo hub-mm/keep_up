@@ -169,10 +169,16 @@
             <li class="task">
                 <div class="task-container">
                     <p>{{ todo_list[task] }}</p>
-                    <form action="{{ url_for('delete_task') }}" method="POST">
-                        <input type="hidden" name="task" value="{{ todo_list[task] }}">
-                        <input type="submit" class="delete-task" value="X">
-                    </form>
+                    <div class="button-container">
+                        <form action="{{ url_for('complete_task') }}" method="POST">
+                            <input type="hidden" name="task" value="{{ todo_list[task] }}">
+                            <input type="submit" class="complete-task" value="✔">
+                        </form>
+                        <form action="{{ url_for('delete_task') }}" method="POST">
+                            <input type="hidden" name="task" value="{{ todo_list[task] }}">
+                            <input type="submit" class="delete-task" value="X">
+                        </form>
+                    </div>
                 </div>
             </li>
             {% endfor %}
@@ -180,6 +186,30 @@
         <form action="{{ url_for('new_task') }}" method="POST">
             <input type="text" name="task" class="add-task" placeholder="New Task">
         </form>
+        {% endif %}
+    </div>
+</div>
+<div class="todo-container">
+    <div class="todo-title">
+        <h2>Completed</h2>
+    </div>
+    <div class="todo_list">
+        {% if not todo_complete %}
+        <p>You have not completed any tasks yet.</p>
+        {% else %}
+        <ul>
+            {% for task in todo_complete %}
+            <li class="task">
+                <div class="task-container">
+                    <p>{{ todo_complete[task] }}</p>
+                    <form action="{{ url_for('delete_complete_task') }}" method="POST">
+                        <input type="hidden" name="task" value="{{ todo_complete[task] }}">
+                        <input type="submit" class="delete-task" value="X">
+                    </form>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
         {% endif %}
     </div>
 </div>

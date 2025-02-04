@@ -33,6 +33,7 @@ def home():
     num_of_weeks = len(month_layout[0])
 
     todo_list = TodoBuild.todo_list
+    todo_complete = TodoBuild.todo_complete
 
     return render_template(
         'index.html',
@@ -45,7 +46,8 @@ def home():
         month_layout=month_layout,
         num_of_weeks=num_of_weeks,
         year_layout=year_layout,
-        todo_list=todo_list
+        todo_list=todo_list,
+        todo_complete=todo_complete
     )
 
 @app.route('/prev_month', methods=['POST'])
@@ -104,6 +106,18 @@ def new_task():
 def delete_task():
     task = request.form.get('task', '')
     TodoBuild.delete_task(task)
+    return redirect(url_for('home'))
+
+@app.route('/complete_task', methods=['POST'])
+def complete_task():
+    task = request.form.get('task', '')
+    TodoBuild.complete_task(task)
+    return redirect(url_for('home'))
+
+@app.route('/delete_complete_task', methods=['POST'])
+def delete_complete_task():
+    task = request.form.get('task', '')
+    TodoBuild.delete_task_complete(task)
     return redirect(url_for('home'))
 
 if __name__ == '__main__':

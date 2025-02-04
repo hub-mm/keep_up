@@ -41,7 +41,7 @@ body {
 }
 
 .dropdown-menu {
-    background-color: rgba(100, 100, 100, 0.4);
+    background-color: rgba(50, 50, 50, 0.9);
     visibility: hidden;
     display: flex;
     flex-direction: column;
@@ -54,11 +54,11 @@ body {
     margin-left: -10px;
     border-radius: 5px;
     width: 20vw;
-    transition: opacity 0.3s ease 0.5s, visibility 0.3s ease 0.5s;
+    transition: opacity 0.4s ease 0.5s, visibility 0.4s ease 0.5s;
 }
 
 .dropdown:hover {
-    background-color: rgba(100, 100, 100, 0.4);
+    background-color: rgba(50, 50, 50, 0.9);
 }
 
 .dropdown:hover .dropdown-menu {
@@ -367,10 +367,16 @@ body {
     padding: 5px 0;
 }
 
-.delete-task {
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 45px;
+}
+
+.delete-task, .complete-task {
     all: unset;
     background-color: rgba(150, 150, 150, .2);
-    color: rgb(255, 20, 57);
     font-weight: bold;
     display: flex;
     justify-content: center;
@@ -380,6 +386,18 @@ body {
     border-radius: 5px;
     padding: 0 5px;
     cursor: pointer;
+}
+
+.delete-task {
+    color: rgb(255, 20, 57);
+}
+
+.complete-task {
+    color: rgb(57, 255, 20);
+}
+
+.delete-task:hover, .complete-task:hover {
+    background-color: rgba(100, 100, 100, .2);
 }
 
 .task {
