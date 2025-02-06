@@ -76,6 +76,21 @@ def home():
         collapse_job=collapse_job
     )
 
+@app.route('/job_applications')
+def job_applications():
+    job_list = JobApplicationBuild.job_list
+
+    if 'collapse_job_applications' not in session:
+        session['collapse_job_applications'] = False
+
+    collapse_job = session['collapse_job_applications']
+
+    return render_template(
+        'job_applications.html',
+        job_list=job_list,
+        collapse_job=collapse_job
+    )
+
 @app.route('/prev_cal', methods=['POST'])
 def prev_cal():
     month = session['month']
@@ -183,14 +198,20 @@ def new_job():
     location = request.form.get('location', '')
     date = request.form.get('date', '')
     JobApplicationBuild(company, role, link, location, date)
-    return redirect(url_for('home'))
+    return redirect(request.referrer or url_for('home'))
 
 @app.route('/add_status', methods=['POST'])
 def add_status():
     job_id = request.form.get('job_id', '')
     status = request.form.get('status', '')
     JobApplicationBuild.add_status(job_id, status)
-    return redirect(url_for('home'))
+    return redirect(request.referrer or url_for('home'))
+
+@app.route('/delete_job', methods=['POST'])
+def delete_job():
+    job_id = request.form.get('job_id', '')
+    JobApplicationBuild.delete_job(job_id)
+    return redirect(request.referrer or url_for('home'))
 
 @app.route('/collapse_job_applications', methods=['POST'])
 def collapse_job_applications():
@@ -198,13 +219,7 @@ def collapse_job_applications():
         session['collapse_job_applications'] = False
     else:
         session['collapse_job_applications'] = True
-    return redirect(url_for('home'))
-
-@app.route('/delete_job', methods=['POST'])
-def delete_job():
-    job_id = request.form.get('job_id', '')
-    JobApplicationBuild.delete_job(job_id)
-    return redirect(url_for('home'))
+    return redirect(request.referrer or url_for('home'))
 
 if __name__ == '__main__':
-    app.run(port=8000, debug=False)
+    app.run(port=8000, debug=True)
