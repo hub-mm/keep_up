@@ -53,7 +53,7 @@ body {
     margin-top: 15px;
     margin-left: -10px;
     border-radius: 5px;
-    width: 20vw;
+    width: 15vw;
     transition: opacity 0.4s ease 0.5s, visibility 0.4s ease 0.5s;
 }
 
@@ -311,7 +311,7 @@ body {
 
 .todo-container {
     width: 90vw;
-    margin: 20px;
+    margin-top: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -321,8 +321,17 @@ body {
 .todo-title {
     background-color: rgba(50, 50, 50, .7);
     color: rgb(255, 255, 255);
-    padding: 5px 10px;
+    padding: 0 10px;
     border-radius: 5px;
+    width: 100%;
+}
+
+.todo-title button {
+    all: unset;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
     width: 100%;
 }
 
@@ -335,6 +344,7 @@ body {
     margin: 5px;
     padding: 10px 0;
     gap: 15px;
+    border-radius: 2px;
 }
 
 .todo_list p {
@@ -347,24 +357,48 @@ body {
     height: 25px;
     width: 95%;
     border-radius: 5px;
-    cursor: cursor;
     margin-left: 15px;
     padding-left: 5px;
+    cursor: text;
+}
+
+.task {
+    color: rgb(255, 255, 255);
+    padding: 0 10px;
 }
 
 .task-container {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.task-container p {
+.task-container:hover {
+    background-color: rgba(75, 75, 75, .2);
+    border-radius: 2px;
+    margin: 0 5px;
+    align-items: center;
+}
+
+.task-info {
     width: 90%;
-    padding: 5px 0;
+}
+
+.task-info button {
+    all: unset;
 }
 
 .task-container form {
     all: unset;
     width: 10%;
     padding: 5px 0;
+    cursor: text;
+}
+
+.task-info input[type=text] {
+    width: 100%;
+    margin: 0;
+    height: 25px;
 }
 
 .button-container {
@@ -374,7 +408,9 @@ body {
     gap: 45px;
 }
 
-.delete-task, .complete-task {
+.delete-task,
+.complete-task,
+.new-job input[type=submit] {
     all: unset;
     background-color: rgba(150, 150, 150, .2);
     font-weight: bold;
@@ -400,7 +436,52 @@ body {
     background-color: rgba(100, 100, 100, .2);
 }
 
-.task {
+.job,
+.new-job {
     color: rgb(255, 255, 255);
-    padding: 0 10px;
+    padding: 5px 5px;
+    text-align: left;
+}
+
+.table-headers th {
+    border-bottom: 1px solid white;
+}
+
+.table-info td {
+    padding-top: 10px;
+}
+
+.job-info form,
+.job-info p,
+.job-info button {
+    all: unset;
+}
+
+.job-info label {
+    font-weight: bold;
+}
+
+.new-job input[type=text] {
+    all: unset;
+    background-color: rgba(100, 100, 100, .2);
+    height: 25px;
+    width: 95%;
+    border-radius: 5px;
+    cursor: text;
+}
+
+.new-job-button {
+    width: 100%;
+    text-align: center;
+}
+
+.new-job-button input[type=submit] {
+    padding: 5px;
+    width: 100%;
+    margin-top: 10px;
+    margin-left: -5px;
+}
+
+.new-job-button input[type=submit]:hover {
+    background-color: rgba(75, 75, 75, .2);
 }

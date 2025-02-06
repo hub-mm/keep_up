@@ -31,21 +31,21 @@
     <div class="calendar-header-container">
         {% if session.month_display %}
         <div class="calendar-header">
-            <form action="{{ url_for('prev') }}" method="POST">
+            <form action="{{ url_for('prev_cal') }}" method="POST">
                 <button type="submit">&lt</button>
             </form>
             <p>{{ month_name }} {{ year }}</p>
-            <form action="{{ url_for('next') }}" METHOD="POST">
+            <form action="{{ url_for('next_cal') }}" METHOD="POST">
                 <button type="submit">&gt</button>
             </form>
         </div>
         {% else %}
         <div class="calendar-header">
-            <form action="{{ url_for('prev') }}" method="POST">
+            <form action="{{ url_for('prev_cal') }}" method="POST">
                 <button type="submit">&lt</button>
             </form>
             <p>{{ year }}</p>
-            <form action="{{ url_for('next') }}" METHOD="POST">
+            <form action="{{ url_for('next_cal') }}" METHOD="POST">
                 <button type="submit">&gt</button>
             </form>
         </div>
@@ -155,62 +155,170 @@
 </div>
 <div class="todo-container">
     <div class="todo-title">
-        <h2>Todo List</h2>
+        <form action="{{ url_for('collapse_todo') }}" method="POST">
+            <h2>
+                <button type="submit">Todo List
+                    {% if session.collapse_todo %}
+                    <p>↲</p>
+                    {% else %}
+                    <p>↴</p>
+                    {% endif %}
+                </button>
+            </h2>
+        </form>
     </div>
-    <div class="todo_list">
-        {% if not todo_list %}
-        <p>You have no tasks, add one to get started.</p>
-        <form action="{{ url_for('new_task') }}" method="POST">
-            <input type="text" name="task" class="add-task" placeholder="New Task">
-        </form>
+    {% if session.collapse_todo %}
+    <div class="todo_list" style="display: none;">
         {% else %}
-        <ul>
-            {% for task in todo_list %}
-            <li class="task">
-                <div class="task-container">
-                    <p>{{ todo_list[task] }}</p>
-                    <div class="button-container">
-                        <form action="{{ url_for('complete_task') }}" method="POST">
-                            <input type="hidden" name="task" value="{{ todo_list[task] }}">
-                            <input type="submit" class="complete-task" value="✔">
-                        </form>
-                        <form action="{{ url_for('delete_task') }}" method="POST">
-                            <input type="hidden" name="task" value="{{ todo_list[task] }}">
-                            <input type="submit" class="delete-task" value="X">
-                        </form>
+        <div class="todo_list">
+            {% endif %}
+            {% if not todo_list %}
+            <p>You have no tasks, add one to get started.</p>
+            <form action="{{ url_for('new_task') }}" method="POST">
+                <input type="text" name="task" class="add-task" placeholder="New Task">
+            </form>
+            {% else %}
+            <ul>
+                {% for id, task in todo_list.items() %}
+                <li class="task">
+                    <div class="task-container">
+                        <div class="task-info">
+                            {% if session.edit_task %}
+                            <form action="{{ url_for('edit_task') }}" method="POST">
+                                <input type="hidden" name="task_id" value="{{ id }}">
+                                <input type="text" name="new_task" class="edit-task" value="{{ task }}">
+                            </form>
+                            {% else %}
+                            <form action="{{ url_for('edit_task') }}" method="POST">
+                                <p>
+                                    <button type="submit">{{ task }}</button>
+                                </p>
+                            </form>
+                            {% endif %}
+                        </div>
+                        <div class="button-container">
+                            <form action="{{ url_for('complete_task') }}" method="POST">
+                                <input type="hidden" name="task" value="{{ task }}">
+                                <input type="submit" class="complete-task" value="✔">
+                            </form>
+                            <form action="{{ url_for('delete_task') }}" method="POST">
+                                <input type="hidden" name="task" value="{{ task }}">
+                                <input type="submit" class="delete-task" value="X">
+                            </form>
+                        </div>
                     </div>
-                </div>
-            </li>
-            {% endfor %}
-        </ul>
-        <form action="{{ url_for('new_task') }}" method="POST">
-            <input type="text" name="task" class="add-task" placeholder="New Task">
-        </form>
-        {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+            <form action="{{ url_for('new_task') }}" method="POST">
+                <input type="text" name="task" class="add-task" placeholder="New Task">
+            </form>
+            {% endif %}
+        </div>
     </div>
 </div>
 <div class="todo-container">
     <div class="todo-title">
-        <h2>Completed</h2>
+        <form action="{{ url_for('collapse_todo_complete') }}" method="POST">
+            <h2>
+                <button type="submit">Completed
+                    {% if session.collapse_todo_complete %}
+                    <p>↲</p>
+                    {% else %}
+                    <p>↴</p>
+                    {% endif %}
+                </button>
+            </h2>
+        </form>
     </div>
-    <div class="todo_list">
-        {% if not todo_complete %}
-        <p>You have not completed any tasks yet.</p>
+    {% if session.collapse_todo_complete %}
+    <div class="todo_list" style="display: none;">
         {% else %}
-        <ul>
-            {% for task in todo_complete %}
-            <li class="task">
-                <div class="task-container">
-                    <p>{{ todo_complete[task] }}</p>
-                    <form action="{{ url_for('delete_complete_task') }}" method="POST">
-                        <input type="hidden" name="task" value="{{ todo_complete[task] }}">
-                        <input type="submit" class="delete-task" value="X">
-                    </form>
-                </div>
-            </li>
+        <div class="todo_list">
+            {% endif %}
+            {% if not todo_complete %}
+            <p>You have not completed any tasks yet.</p>
+            {% else %}
+            <ul>
+                {% for task in todo_complete %}
+                <li class="task">
+                    <div class="task-container">
+                        <p>{{ todo_complete[task] }}</p>
+                        <form action="{{ url_for('delete_complete_task') }}" method="POST">
+                            <input type="hidden" name="task" value="{{ todo_complete[task] }}">
+                            <input type="submit" class="delete-task" value="X">
+                        </form>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<div class="todo-container">
+    <div class="todo-title">
+        <form action="{{ url_for('collapse_job_applications') }}" method="POST">
+            <h2>
+                <button type="submit">Job Applications
+                    {% if session.collapse_job_applications %}
+                    <p>↲</p>
+                    {% else %}
+                    <p>↴</p>
+                    {% endif %}
+                </button>
+            </h2>
+        </form>
+    </div>
+    {% if session.collapse_job_applications %}
+    <div class="todo_list" style="display: none;">
+        {% else %}
+        <div class="todo_list">
+            {% endif %}
+            {% if not job_list %}
+            <p>You have no job applications yet, add one to get started.</p>
+            {% else %}
+            {% for id, job in job_list.items() %}
+            <table class="job">
+                <tr class="table-headers">
+                    {% for key, info in job.items() %}
+                    <th>{{ key|title }}</th>
+                    {% endfor %}
+                </tr>
+                <tr class="table-info">
+                    {% for key, info in job.items() %}
+                    <td>{{ info|title }}</td>
+                    {% endfor %}
+                </tr>
+            </table>
             {% endfor %}
-        </ul>
-        {% endif %}
+            {% endif %}
+            <form class="new-job" action="{{ url_for('new_job') }}" method="POST">
+                <table class="new-job">
+                    <tr class="table-headers">
+                        <th><label for="company">Company</label></th>
+                        <th><label for="role">Role</label></th>
+                        <th><label for="link">Link</label></th>
+                        <th><label for="location">Location</label></th>
+                        <th><label for="date">Date</label></th>
+                    </tr>
+                    <tr class="table-info">
+                        <td><input type="text" id="company" name="company" class="add-task" placeholder="New Company">
+                        </td>
+                        <td><input type="text" id="role" name="role" class="add-task" placeholder="New Role"></td>
+                        <td><input type="text" id="link" name="link" class="add-task" placeholder="New Link"></td>
+                        <td><input type="text" id="location" name="location" class="add-task"
+                                   placeholder="New Location"></td>
+                        <td><input type="text" id="date" name="date" class="add-task" placeholder="New Date"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" class="new-job-button">
+                            <input type="submit" value="Add">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
     </div>
 </div>
 </body>
