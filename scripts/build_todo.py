@@ -46,3 +46,15 @@ class TodoBuild:
             cls.todo_complete[key] = task
         else:
             print('Task not found.')
+
+    @classmethod
+    def edit_task(cls, task_id, new_value):
+        try:
+            task_uuid = uuid.UUID(task_id)
+        except ValueError:
+            print('Invalid task ID.')
+            return
+        if task_uuid in cls.todo_list:
+            cls.todo_list[task_uuid] = new_value
+        else:
+            print('Task not found.')
