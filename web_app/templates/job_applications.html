@@ -1,0 +1,17 @@
+<!-- ./web_app/templates/job_applications.html -->
+{% extends 'index.html' %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block title %}Job Applications{% endblock %}
+
+
+{% block body %}
+    {% block header %}
+        {{ super() }}
+    {% endblock %}
+    {% block job_applications %}
+        {{ super() }}
+    {% endblock %}
+{% endblock %}
