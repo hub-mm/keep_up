@@ -256,7 +256,7 @@
         </div>
     </div>
 </div>
-<div class="todo-container">
+<div class="job-container">
     <div class="todo-title">
         <form action="{{ url_for('collapse_job_applications') }}" method="POST">
             <h2>
@@ -278,20 +278,55 @@
             {% if not job_list %}
             <p>You have no job applications yet, add one to get started.</p>
             {% else %}
-            {% for id, job in job_list.items() %}
-            <table class="job">
+            <table class="job" style="border-collapse: collapse;">
                 <tr class="table-headers">
-                    {% for key, info in job.items() %}
-                    <th>{{ key|title }}</th>
-                    {% endfor %}
+                    <th>Company</th>
+                    <th>Role</th>
+                    <th>Link</th>
+                    <th>Location</th>
+                    <th>Date</th>
+                    <th colspan="2">Status</th>
                 </tr>
+                {% for id, job in job_list.items() %}
                 <tr class="table-info">
-                    {% for key, info in job.items() %}
-                    <td>{{ info|title }}</td>
-                    {% endfor %}
+                    <td style="font-weight: bold;">{{ job['company']|title }}</td>
+                    <td>{{ job['role']|title }}</td>
+                    <td>
+                        {% if job['link'] %}
+                        <a href="{{ job['link'] }}">{{ job['company']|title }}</a>
+                        {% else %}
+                        N/A
+                        {% endif %}
+                    </td>
+                    <td>{{ job['location']|title }}</td>
+                    <td>{{ job['date']|title }}</td>
+                    <td>
+                        {% if job['status'] is not none %}
+                        {{ job['status']|title }}
+                        {% else %}
+                        <form action="{{ url_for('add_status') }}" method="POST">
+                            <label for="status"></label>
+                            <select name="status" id="status-{{ id }}">
+                                <option value="no answer">No answer</option>
+                                <option value="rejected">Rejected</option>
+                                <option value="assessment">Assessment</option>
+                                <option value="interview">Interview</option>
+                                <option value="accepted">Accepted</option>
+                            </select>
+                            <input type="hidden" name="job_id" value="{{ id }}">
+                            <input type="submit" value="Enter">
+                        </form>
+                        {% endif %}
+                    </td>
+                    <td class="delete-job">
+                        <form action="{{ url_for('delete_job') }}" method="POST">
+                            <input type="hidden" name="job_id" value="{{ id }}">
+                            <input type="submit" class="delete-task" value="X">
+                        </form>
+                    </td>
                 </tr>
+                {% endfor %}
             </table>
-            {% endfor %}
             {% endif %}
             <form class="new-job" action="{{ url_for('new_job') }}" method="POST">
                 <table class="new-job">
@@ -303,13 +338,22 @@
                         <th><label for="date">Date</label></th>
                     </tr>
                     <tr class="table-info">
-                        <td><input type="text" id="company" name="company" class="add-task" placeholder="New Company">
+                        <td>
+                            <input type="text" id="company" name="company" class="add-task" placeholder="Add Company">
                         </td>
-                        <td><input type="text" id="role" name="role" class="add-task" placeholder="New Role"></td>
-                        <td><input type="text" id="link" name="link" class="add-task" placeholder="New Link"></td>
-                        <td><input type="text" id="location" name="location" class="add-task"
-                                   placeholder="New Location"></td>
-                        <td><input type="text" id="date" name="date" class="add-task" placeholder="New Date"></td>
+                        <td>
+                            <input type="text" id="role" name="role" class="add-task" placeholder="Add Role">
+                        </td>
+                        <td>
+                            <input type="text" id="link" name="link" class="add-task" placeholder="Add Link">
+                        </td>
+                        <td>
+                            <input type="text" id="location" name="location" class="add-task"
+                                   placeholder="Add Location">
+                        </td>
+                        <td>
+                            <input type="text" id="date" name="date" class="add-task" placeholder="Add Date">
+                        </td>
                     </tr>
                     <tr>
                         <td colspan="5" class="new-job-button">
