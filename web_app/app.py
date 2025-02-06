@@ -185,6 +185,13 @@ def new_job():
     JobApplicationBuild(company, role, link, location, date)
     return redirect(url_for('home'))
 
+@app.route('/add_status', methods=['POST'])
+def add_status():
+    job_id = request.form.get('job_id', '')
+    status = request.form.get('status', '')
+    JobApplicationBuild.add_status(job_id, status)
+    return redirect(url_for('home'))
+
 @app.route('/collapse_job_applications', methods=['POST'])
 def collapse_job_applications():
     if session['collapse_job_applications']:
@@ -193,5 +200,11 @@ def collapse_job_applications():
         session['collapse_job_applications'] = True
     return redirect(url_for('home'))
 
+@app.route('/delete_job', methods=['POST'])
+def delete_job():
+    job_id = request.form.get('job_id', '')
+    JobApplicationBuild.delete_job(job_id)
+    return redirect(url_for('home'))
+
 if __name__ == '__main__':
-    app.run(port=8000, debug=False)
+    app.run(port=8000, debug=True)
