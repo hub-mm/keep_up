@@ -78,15 +78,15 @@
             {% else %}
             <div class="visible">
                 {% if current_day == day and current_month == month_num and current_year == year %}
-                <form class="current-day-cell" method="POST">
-                    <input type="hidden" name="day" value="{{ day }}">
+                <form action="{{ url_for('select_date') }}" class="current-day-cell" method="POST">
+                    <input type="hidden" name="select_date" value="{{ day }}/{{ month_num }}/{{ year }}">
                     <button type="submit" class="day-cell-button">
                         <span class="day-info" style="border-radius: 5px;">{{ day }}/{{ month_num }}/{{ year }}</span>
                     </button>
                 </form>
                 {% else %}
-                <form class="day-cell" method="POST">
-                    <input type="hidden" name="day" value="{{ day }}">
+                <form action="{{ url_for('select_date') }}" class="day-cell" method="POST">
+                    <input type="hidden" name="select_date" value="{{ day }}/{{ month_num }}/{{ year }}">
                     <button type="submit" class="day-cell-button">
                         <span class="day-info" style="border-radius: 5px;">{{ day }}/{{ month_num }}/{{ year }}</span>
                     </button>
@@ -112,16 +112,16 @@
                     {% else %}
                     <div class="visible-year">
                         {% if current_day == day and current_month == month_index and current_year == year %}
-                        <form class="current-day-cell-year" method="POST">
-                            <input type="hidden" name="day" value="{{ day }}">
+                        <form action="{{ url_for('select_date') }}" class="current-day-cell-year" method="POST">
+                            <input type="hidden" name="select_date" value="{{ day }}/{{ month_index }}/{{ year }}">
                             <button type="submit" class="day-cell-button">
                                 <span class="day-info"
                                       style="border-radius: 2px;">{{ day }}/{{ month_num }}/{{ year }}</span>
                             </button>
                         </form>
                         {% else %}
-                        <form class="day-cell-year" method="POST">
-                            <input type="hidden" name="day" value="{{ day }}">
+                        <form action="{{ url_for('select_date') }}" class="day-cell-year" method="POST">
+                            <input type="hidden" name="select_date" value="{{ day }}/{{ month_index }}/{{ year }}">
                             <button type="submit" class="day-cell-button">
                                 <span class="day-info"
                                       style="border-radius: 2px;">{{ day }}/{{ month_index }}/{{ year }}</span>
@@ -184,9 +184,6 @@
             {% endif %}
             {% if not todo_list %}
             <p>You have no tasks, add one to get started.</p>
-            <form action="{{ url_for('new_task') }}" method="POST">
-                <input type="text" name="task" class="add-task" placeholder="New Task">
-            </form>
             {% else %}
             <ul>
                 {% for id, task in todo_list.items() %}
@@ -220,10 +217,41 @@
                 </li>
                 {% endfor %}
             </ul>
-            <form action="{{ url_for('new_task') }}" method="POST">
-                <input type="text" name="task" class="add-task" placeholder="New Task">
-            </form>
             {% endif %}
+            <div class="habits-container">
+                {% if habits_for_day %}
+                <ul class="habit-div">
+                    {% for habit in habits_for_day %}
+                    <li>
+                        <p>{{ habit.habit }}</p>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>No habits scheduled for this day.</p>
+                {% endif %}
+            </div>
+            <div class="add-task">
+                <form action="{{ url_for('new_task') }}" method="POST">
+                    <input type="text" name="task" placeholder="New Task">
+                </form>
+            </div>
+            <form action="{{ url_for('new_habit') }}" method="POST">
+                <div class="habit-container">
+                    <input type="text" name="habit" class="add-habit" placeholder="New Habit">
+                    <label for="frequency"></label>
+                    <select name="frequency" id="frequency">
+                        <option value="daily">Daily</option>
+                        <option value="alternate">Alternate</option>
+                        <option value="tridum">Tridum</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly">Monthly</option>
+                    </select>
+                </div>
+                <div class="habits-confirm-button">
+                    <input type="submit" value="Enter">
+                </div>
+            </form>
         </div>
     </div>
 </div>
