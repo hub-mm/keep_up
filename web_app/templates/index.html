@@ -2,18 +2,23 @@
 <!doctype html>
 <html lang="en">
 <head>
+    {% block head %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <title>Home</title>
+    <title>{% block title %}Home{% endblock %}</title>
+    {% endblock %}
 </head>
 <body>
+{% block body %}
+{% block header %}
 <div class="header">
     <div class="dropdown">
         <button class="dropdown-button">Menu</button>
         <div class="dropdown-menu">
-            <a href="#">Job Applications</a>
-            <a href="#">To Do</a>
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('job_applications') }}">Job</a>
+            <a href="#">Todo</a>
             <a href="#">Habits</a>
             <a href="#">Info</a>
         </div>
@@ -27,6 +32,7 @@
         </form>
     </div>
 </div>
+{% endblock %}
 <div class="calendar-container">
     <div class="calendar-header-container">
         {% if session.month_display %}
@@ -72,17 +78,19 @@
             {% else %}
             <div class="visible">
                 {% if current_day == day and current_month == month_num and current_year == year %}
-                <div class="current-day-cell">
-                    <div class="day-info-div">
+                <form class="current-day-cell" method="POST">
+                    <input type="hidden" name="day" value="{{ day }}">
+                    <button type="submit" class="day-cell-button">
                         <span class="day-info" style="border-radius: 5px;">{{ day }}/{{ month_num }}/{{ year }}</span>
-                    </div>
-                </div>
+                    </button>
+                </form>
                 {% else %}
-                <div class="day-cell">
-                    <div class="day-info-div">
+                <form class="day-cell" method="POST">
+                    <input type="hidden" name="day" value="{{ day }}">
+                    <button type="submit" class="day-cell-button">
                         <span class="day-info" style="border-radius: 5px;">{{ day }}/{{ month_num }}/{{ year }}</span>
-                    </div>
-                </div>
+                    </button>
+                </form>
                 {% endif %}
             </div>
             {% endif %}
@@ -104,19 +112,21 @@
                     {% else %}
                     <div class="visible-year">
                         {% if current_day == day and current_month == month_index and current_year == year %}
-                        <div class="current-day-cell-year">
-                            <div class="day-info-div">
-                            <span class="day-info"
-                                  style="border-radius: 2px;">{{ day }}/{{ month_index }}/{{ year }}</span>
-                            </div>
-                        </div>
+                        <form class="current-day-cell-year" method="POST">
+                            <input type="hidden" name="day" value="{{ day }}">
+                            <button type="submit" class="day-cell-button">
+                                <span class="day-info"
+                                      style="border-radius: 2px;">{{ day }}/{{ month_num }}/{{ year }}</span>
+                            </button>
+                        </form>
                         {% else %}
-                        <div class="day-cell-year">
-                            <div class="day-info-div">
-                            <span class="day-info"
-                                  style="border-radius: 2px;">{{ day }}/{{ month_index }}/{{ year }}</span>
-                            </div>
-                        </div>
+                        <form class="day-cell-year" method="POST">
+                            <input type="hidden" name="day" value="{{ day }}">
+                            <button type="submit" class="day-cell-button">
+                                <span class="day-info"
+                                      style="border-radius: 2px;">{{ day }}/{{ month_index }}/{{ year }}</span>
+                            </button>
+                        </form>
                         {% endif %}
                     </div>
                     {% endif %}
@@ -256,6 +266,7 @@
         </div>
     </div>
 </div>
+{% block job_applications %}
 <div class="job-container">
     <div class="todo-title">
         <form action="{{ url_for('collapse_job_applications') }}" method="POST">
@@ -365,5 +376,7 @@
         </div>
     </div>
 </div>
+{% endblock %}
+{% endblock %}
 </body>
 </html>
