@@ -205,8 +205,8 @@ body {
     visibility: visible;
 }
 
-.day-cell:hover,
-.current-day-cell:hover {
+.day-cell button:hover,
+.current-day-cell button:hover {
     background-color: rgba(255, 255, 255, 0.2);
 }
 
@@ -285,8 +285,8 @@ body {
     visibility: visible;
 }
 
-.day-cell-year:hover,
-.current-day-cell-year:hover {
+.day-cell-year button:hover,
+.current-day-cell-year button:hover {
     background-color: rgba(255, 255, 255, 0.2);
 }
 
@@ -384,7 +384,7 @@ body {
 }
 
 .task-info {
-    width: 90%;
+    width: 100%;
 }
 
 .task-info button {
@@ -437,6 +437,63 @@ body {
 
 .delete-task:hover, .complete-task:hover {
     background-color: rgba(100, 100, 100, .2);
+}
+
+.habit-div p {
+    padding: 5px 20px;
+    color: rgb(255, 20, 57);
+}
+
+.habit-div p:hover {
+    background-color: rgba(75, 75, 75, .2);
+    border-radius: 2px;
+    margin: 0 5px;
+    align-items: center;
+}
+
+.habit-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 5px;
+}
+
+.habit-container select {
+    all: unset;
+    display: flex;
+    align-items: center;
+    background-color: rgba(100, 100, 100, .2);
+    border-radius: 5px;
+    height: 25px;
+    margin-right: 20px;
+    padding: 0 5px;
+    cursor: pointer;
+}
+
+.habit-container select:hover {
+    background-color: rgba(200, 200, 200, .2);
+}
+
+.habits-confirm-button {
+    display: flex;
+    justify-content: center;
+}
+
+.habits-confirm-button input[type=submit] {
+    all: unset;
+    background-color: rgba(150, 150, 150, .2);
+    text-align: center;
+    border-radius: 5px;
+    width: 100%;
+    margin: 0 10px;
+    margin-top: 10px;
+    height: 25px;
+    font-weight: bold;
+}
+
+.habits-confirm-button input[type=submit]:hover {
+    background-color: rgba(75, 75, 75, .2);
 }
 
 .job-container {
@@ -534,7 +591,6 @@ body {
 .new-job-button input[type=submit] {
     padding: 5px;
     width: 100%;
-    margin-top: 10px;
     margin-left: -5px;
     margin-bottom: -10px;
 }
