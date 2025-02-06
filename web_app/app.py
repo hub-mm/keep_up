@@ -3,6 +3,7 @@ from config import SECRET_KEY
 from scripts.build_calendar import CalendarBuild
 from scripts.build_todo import TodoBuild
 from scripts.build_job_applications import JobApplicationBuild
+from scripts.build_habits import HabitBuild
 from flask import Flask, render_template, url_for, redirect, session, request
 from datetime import datetime
 
@@ -20,12 +21,18 @@ def home():
     if 'month_display' not in session:
         session['month_display'] = True
 
+    if 'select_date' not in session:
+        session['select_date'] = f"{current_time.day}/{current_time.month}/{current_time.year}"
+
     month = session['month']
     year = session['year']
+    date = session['select_date']
 
     current_day = current_time.day
     current_month = current_time.month
     current_year = current_time.year
+
+    habits_for_day = HabitBuild.get_habits_for_date(date)
 
     calendar = CalendarBuild(month, year)
     month_name = calendar.get_month_name()
@@ -48,7 +55,6 @@ def home():
 
     collapse_todo_list = session['collapse_todo']
     collapse_complete = session['collapse_todo_complete']
-
     task_edit = session['edit_task']
 
     if 'collapse_job_applications' not in session:
@@ -73,7 +79,8 @@ def home():
         collapse_complete=collapse_complete,
         edit_task=task_edit,
         job_list=job_list,
-        collapse_job=collapse_job
+        collapse_job=collapse_job,
+        habits_for_day = habits_for_day
     )
 
 @app.route('/job_applications')
@@ -161,6 +168,13 @@ def delete_complete_task():
     TodoBuild.delete_task_complete(task)
     return redirect(url_for('home'))
 
+@app.route('/new_habit', methods=['POST'])
+def new_habit():
+    habit = request.form.get('habit', '')
+    frequency = request.form.get('frequency', '')
+    HabitBuild.add_habit(session['select_date'], habit, frequency)
+    return redirect(url_for('home'))
+
 @app.route('/collapse_todo', methods=['POST'])
 def collapse_todo():
     if session['collapse_todo']:
@@ -221,5 +235,11 @@ def collapse_job_applications():
         session['collapse_job_applications'] = True
     return redirect(request.referrer or url_for('home'))
 
+@app.route('/select_date', methods=['POST'])
+def select_date():
+    date = request.form.get('select_date', '')
+    session['select_date'] = date
+    return redirect(url_for('home'))
+
 if __name__ == '__main__':
-    app.run(port=8000, debug=True)
+    app.run(port=8000, debug=False)
