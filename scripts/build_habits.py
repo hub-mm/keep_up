@@ -16,6 +16,7 @@ class HabitBuild:
         self.frequency = frequency
         self.id = uuid.uuid4()
         self.start_date = datetime(self.year, self.month, self.day)
+        self.completed_dates = set()
 
     @classmethod
     def add_habit(cls, date, habit, frequency):
@@ -50,3 +51,48 @@ class HabitBuild:
                 habits_for_day.append(habit)
 
         return habits_for_day
+
+    def mark_complete(self, date_str):
+        try:
+            date_obj = datetime.strptime(date_str, '%d/%m/%Y')
+        except ValueError:
+            print('Invalid date format.')
+            return
+        self.completed_dates.add(date_obj)
+
+    def is_complete_for_date(self, date_str):
+        try:
+            date_obj = datetime.strptime(date_str, '%d/%m/%Y')
+        except ValueError:
+            return False
+        return date_obj in self.completed_dates
+
+    @classmethod
+    def complete_habit_for_date(cls, habit_id_str, date_str):
+        try:
+            habit_id = uuid.UUID(habit_id_str)
+        except ValueError:
+            print('Invalid habit ID.')
+            return None
+        habit = cls.habit_list.get(habit_id)
+        if habit:
+            habit.mark_complete(date_str)
+            return habit
+        else:
+            print('Habit not found.')
+            return None
+
+    @classmethod
+    def delete_habit(cls, habit_id_str):
+        try:
+            habit_id = uuid.UUID(habit_id_str)
+        except ValueError:
+            print("Invalid habit ID.")
+            return None
+
+        if habit_id in cls.habit_list:
+            del cls.habit_list[habit_id]
+            return habit_id
+        else:
+            print('Habit not found.')
+            return None
