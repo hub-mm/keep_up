@@ -184,6 +184,16 @@ body {
     color: white;
 }
 
+.selected-day-cell button {
+    all: unset;
+    height: 25px;
+    width: 25px;
+    border: 1px solid rgb(255, 150, 100);
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+}
+
 .day-cell button {
     all: unset;
     height: 25px;
@@ -236,6 +246,16 @@ body {
     height: 25px;
     width: 10px;
     border: 1px solid rgb(255, 20, 57);
+    border-radius: 2px;
+    cursor: pointer;
+    color: white;
+}
+
+.selected-day-cell-year button {
+    all: unset;
+    height: 25px;
+    width: 10px;
+    border: 1px solid rgb(255, 150, 100);
     border-radius: 2px;
     cursor: pointer;
     color: white;
@@ -358,7 +378,7 @@ body {
     all: unset;
     background-color: rgba(100, 100, 100, .2);
     height: 25px;
-    width: 95%;
+    width: 100%;
     border-radius: 5px;
     margin-left: 15px;
     padding-left: 5px;
@@ -372,15 +392,15 @@ body {
 
 .task-container {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .task-container:hover {
     background-color: rgba(75, 75, 75, .2);
     border-radius: 2px;
     margin: 0 5px;
-    align-items: center;
 }
 
 .task-info {
@@ -404,6 +424,10 @@ body {
     height: 25px;
 }
 
+.add-task {
+    margin-right: 40px;
+}
+
 .button-container {
     display: flex;
     justify-content: center;
@@ -420,7 +444,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left: auto;
     width: 40px;
     border-radius: 5px;
     padding: 0 5px;
@@ -429,37 +452,38 @@ body {
 
 .delete-task {
     color: rgb(255, 20, 57);
+    margin-left: auto;
 }
 
 .complete-task {
     color: rgb(57, 255, 20);
 }
 
-.delete-task:hover, .complete-task:hover {
+.delete-task:hover,
+.complete-task:hover {
     background-color: rgba(100, 100, 100, .2);
 }
 
-.habit-div p {
-    padding: 5px 20px;
-    color: rgb(255, 20, 57);
+.habit-not-complete {
+    background-color: rgba(255, 20, 57, 0.2);
+    border-radius: 5px;
 }
 
-.habit-div p:hover {
-    background-color: rgba(75, 75, 75, .2);
-    border-radius: 2px;
-    margin: 0 5px;
-    align-items: center;
+.habit-complete {
+    background-color: rgba(57, 255, 20, 0.2);
+    border-radius: 5px;
 }
 
-.habit-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.add-habit {
     width: 100%;
+}
+
+.add-habit-div {
+    display: flex;
     gap: 5px;
 }
 
-.habit-container select {
+.add-habit-div select {
     all: unset;
     display: flex;
     align-items: center;
@@ -469,10 +493,6 @@ body {
     margin-right: 20px;
     padding: 0 5px;
     cursor: pointer;
-}
-
-.habit-container select:hover {
-    background-color: rgba(200, 200, 200, .2);
 }
 
 .habits-confirm-button {
