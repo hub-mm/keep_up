@@ -97,7 +97,7 @@ Update the status of the applications and remove when necessary.
 - **User login.**
 - **Specific pages:** Todo, Habits.
 - **Further improvements:** Job Application page.
-- **Ability to set events for specific days.**
+- **Add heatmap.**
 
 ## Contributions
 If you wish to contribute, please feel free to fork the repository and submit pull requests with improvements or
