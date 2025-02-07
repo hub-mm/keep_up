@@ -175,6 +175,19 @@ def new_habit():
     HabitBuild.add_habit(session['select_date'], habit, frequency)
     return redirect(url_for('home'))
 
+@app.route('/delete_habit', methods=['POST'])
+def delete_habit():
+    habit_id = request.form.get('habit', '')
+    HabitBuild.delete_habit(habit_id)
+    return redirect(url_for('home'))
+
+@app.route('/complete_habit', methods=['POST'])
+def complete_habit():
+    habit_id = request.form.get('habit', '')
+    date = request.form.get('date', session.get('select_date', ''))
+    HabitBuild.complete_habit_for_date(habit_id, date)
+    return redirect(url_for('home'))
+
 @app.route('/collapse_todo', methods=['POST'])
 def collapse_todo():
     if session['collapse_todo']:
