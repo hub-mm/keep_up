@@ -594,10 +594,15 @@ body {
     background-color: rgba(200, 200, 200, .2);
 }
 
+.delete-job {
+    width: 40px;
+    min-width: 10px;
+}
+
 .delete-job input[type=submit] {
     color: rgb(255, 20, 57);
-    text-align: center;
     width: 40px;
+    min-width: 10px;
 }
 
 .new-job input[type=text] {
