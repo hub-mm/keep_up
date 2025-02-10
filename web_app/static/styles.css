@@ -545,8 +545,14 @@ body {
 .table-info p,
 .table-info button,
 .table-info select,
-.table-info input {
+.table-info input,
+.table-info a {
     all: unset;
+}
+
+.table-info a {
+    color: rgb(57, 255, 20);
+    text-decoration: underline;
 }
 
 .table-info td {
