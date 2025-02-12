@@ -11,20 +11,21 @@ class JobApplicationBuild:
 
     job_list = {}
 
-    def __init__(self, company=None, role=None, link=None, location=None, date=None):
+    def __init__(self, company=None, role=None, link=None, location=None, date=None, status=None):
         self.company = company
         self.role = role
         self.link = link
         self.location = location
         self.date = date
         self.id = uuid.uuid4()
+        self.status = status
         JobApplicationBuild.job_list[self.id] = {
             'company': self.company,
             'role': self.role,
             'link': self.link,
             'location': self.location,
             'date': self.date,
-            'status': None
+            'status': self.status
         }
 
     @classmethod
@@ -50,6 +51,13 @@ class JobApplicationBuild:
             cls.job_list[job_uuid]['status'] = status
         else:
             print('Job id not found', job_uuid)
+
+    @classmethod
+    def edit_status(cls, job_id, new_status):
+        if job_id in cls.job_list:
+            cls.job_list[job_id]['status'] = new_status
+        else:
+            print("Job not found.")
 
     @classmethod
     def load_data(cls):

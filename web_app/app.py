@@ -57,9 +57,13 @@ def home():
     collapse_complete = session['collapse_todo_complete']
     task_edit = session['edit_task']
 
+    if 'edit_job_status' not in session:
+        session['edit_job_status'] = False
+
     if 'collapse_job_applications' not in session:
         session['collapse_job_applications'] = False
 
+    status_edit = session['edit_job_status']
     collapse_job = session['collapse_job_applications']
 
     return render_template(
@@ -79,6 +83,7 @@ def home():
         collapse_complete=collapse_complete,
         edit_task=task_edit,
         job_list=job_list,
+        edit_status=status_edit,
         collapse_job=collapse_job,
         habits_for_day=habits_for_day
     )
@@ -91,11 +96,16 @@ def job_applications():
     if 'collapse_job_applications' not in session:
         session['collapse_job_applications'] = False
 
+    if 'collapse_job_applications' not in session:
+        session['collapse_job_applications'] = False
+
+    status_edit = session['edit_job_status']
     collapse_job = session['collapse_job_applications']
 
     return render_template(
         'job_applications.html',
         job_list=job_list,
+        edit_status=status_edit,
         collapse_job=collapse_job
     )
 
@@ -249,6 +259,18 @@ def add_status():
     job_id = request.form.get('job_id', '')
     status = request.form.get('status', '')
     JobApplicationBuild.add_status(job_id, status)
+    session['edit_job_status'] = False
+    return redirect(request.referrer or url_for('home'))
+
+
+@app.route('/edit_job_status', methods=['POST'])
+def edit_job_status():
+    job_id = request.form.get('job_id', '')
+    new_status = request.form.get('new_status', '')
+    if job_id and new_status:
+        JobApplicationBuild.edit_status(job_id, new_status)
+
+    session['edit_job_status'] = True
     return redirect(request.referrer or url_for('home'))
 
 
@@ -276,4 +298,4 @@ def select_date():
 
 
 if __name__ == '__main__':
-    app.run(port=8000, debug=False)
+    app.run(port=8000, debug=True)
