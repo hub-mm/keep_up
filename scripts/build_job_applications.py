@@ -85,7 +85,6 @@ class JobApplicationBuild:
 
     @classmethod
     def save_data(cls):
-        print(cls.job_list)
         if not os.path.exists(cls.data_dir):
             os.makedirs(cls.data_dir)
         try:
