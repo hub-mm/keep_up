@@ -75,16 +75,25 @@ Update the status of the applications and remove when necessary.
     Replace 'your-secret-key' with a secure key of your choice.
 
 ## Running the Application
-1. Navigate to project root:
+1. Clone Repository:
+   ```bash
+   git clone https://github.com/hub-mm/keep_up_productivity_tool.git
+   ```
+2. Navigate to project root:
     ```bash
-    cd keep_up
+    cd keep_up_productivity_tool
     ```
-2. Run the Flask application by executing:
+3. Setup virtual environment (optional):
+   ```bash
+   python -m venv venv
+   source job_app_venv/bin/activate # on macOS/Linux
+   .\job_app_venv\Scripts\activate  # on Windows
+   ```
+4. Run the Flask application by executing:
    ```bash
    python -m web_app.app
    ```
-
-3. Open your web browser and visit http://127.0.0.1:8000/home to view the application.
+5. Open your web browser and visit http://127.0.0.1:8000/home to view the application.
 
 ## Usage
 - Use the navigation menu to access different sections such as Home, Job Applications, Todo and Habits.
