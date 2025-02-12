@@ -11,7 +11,7 @@ class JobApplicationBuild:
 
     job_list = {}
 
-    def __init__(self, company=None, role=None, link=None, location=None, date=None, status=None):
+    def __init__(self, status, company=None, role=None, link=None, location=None, date=None):
         self.company = company
         self.role = role
         self.link = link
@@ -54,8 +54,13 @@ class JobApplicationBuild:
 
     @classmethod
     def edit_status(cls, job_id, new_status):
-        if job_id in cls.job_list:
-            cls.job_list[job_id]['status'] = new_status
+        try:
+            job_uuid = uuid.UUID(job_id)
+        except ValueError:
+            print('Invalid job_id format:', job_id)
+            return
+        if job_uuid in cls.job_list:
+            cls.job_list[job_uuid]['status'] = new_status
         else:
             print("Job not found.")
 
@@ -80,6 +85,7 @@ class JobApplicationBuild:
 
     @classmethod
     def save_data(cls):
+        print(cls.job_list)
         if not os.path.exists(cls.data_dir):
             os.makedirs(cls.data_dir)
         try:

@@ -10,7 +10,6 @@ from datetime import datetime
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
 
-
 @app.route('/home', methods=['GET'])
 def home():
     current_time = datetime.now()
@@ -250,27 +249,28 @@ def new_job():
     link = request.form.get('link', '')
     location = request.form.get('location', '')
     date = request.form.get('date', '')
-    JobApplicationBuild(company, role, link, location, date)
+    status = 'No Answer'
+    JobApplicationBuild(status, company, role, link, location, date)
     return redirect(request.referrer or url_for('home'))
 
 
 @app.route('/add_status', methods=['POST'])
 def add_status():
+    session['edit_job_status'] = False
     job_id = request.form.get('job_id', '')
     status = request.form.get('status', '')
     JobApplicationBuild.add_status(job_id, status)
-    session['edit_job_status'] = False
     return redirect(request.referrer or url_for('home'))
 
 
 @app.route('/edit_job_status', methods=['POST'])
 def edit_job_status():
+    session['edit_job_status'] = True
+
     job_id = request.form.get('job_id', '')
     new_status = request.form.get('new_status', '')
     if job_id and new_status:
         JobApplicationBuild.edit_status(job_id, new_status)
-
-    session['edit_job_status'] = True
     return redirect(request.referrer or url_for('home'))
 
 
@@ -298,4 +298,4 @@ def select_date():
 
 
 if __name__ == '__main__':
-    app.run(port=8000, debug=True)
+    app.run(port=8000, debug=False)

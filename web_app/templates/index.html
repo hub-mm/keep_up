@@ -377,7 +377,7 @@
                     <td>{{ job['location']|title }}</td>
                     <td>{{ job['date']|title }}</td>
                     <td>
-                        {% if not session.edit_job_status and job['status'] != None  %}
+                        {% if not session.edit_job_status %}
                         <form action="{{ url_for('edit_job_status') }}" method="POST">
                             <input type="hidden" name="job_id" value="{{ id }}">
                             <input type="hidden" name="new_status" value="{{ job['status'] }}"
