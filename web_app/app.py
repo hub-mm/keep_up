@@ -10,6 +10,7 @@ from datetime import datetime
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
 
+
 @app.route('/home', methods=['GET'])
 def home():
     current_time = datetime.now()
@@ -109,6 +110,46 @@ def job_applications():
     )
 
 
+@app.route('/todo_and_habits')
+def todo_and_habits():
+    current_time = datetime.now()
+    if 'month' not in session or 'year' not in session:
+        session['month'] = current_time.month
+        session['year'] = current_time.year
+
+    if 'select_date' not in session:
+        session['select_date'] = f"{current_time.day}/{current_time.month}/{current_time.year}"
+
+    date = session['select_date']
+
+    todo_list = TodoBuild.todo_list
+    todo_complete = TodoBuild.todo_complete
+    habits_for_day = HabitBuild.get_habits_for_date(date)
+
+    if 'collapse_todo' not in session:
+        session['collapse_todo'] = False
+
+    if 'collapse_todo_complete' not in session:
+        session['collapse_todo_complete'] = False
+
+    if 'edit_task' not in session:
+        session['edit_task'] = False
+
+    collapse_todo_list = session['collapse_todo']
+    collapse_complete = session['collapse_todo_complete']
+    task_edit = session['edit_task']
+
+    return render_template(
+        'todo_and_habits.html',
+        todo_list=todo_list,
+        todo_complete=todo_complete,
+        collapse_todo=collapse_todo_list,
+        collapse_complete=collapse_complete,
+        edit_task=task_edit,
+        habits_for_day=habits_for_day
+    )
+
+
 @app.route('/prev_cal', methods=['POST'])
 def prev_cal():
     month = session['month']
@@ -159,32 +200,39 @@ def month_display():
     return redirect(url_for('home'))
 
 
+@app.route('/select_date', methods=['POST'])
+def select_date():
+    date = request.form.get('select_date', '')
+    session['select_date'] = date
+    return redirect(url_for('home'))
+
+
 @app.route('/new_task', methods=['POST'])
 def new_task():
     task = request.form.get('task', '')
     TodoBuild(task)
-    return redirect(url_for('home'))
+    return redirect(request.referrer or url_for('home'))
 
 
 @app.route('/delete_task', methods=['POST'])
 def delete_task():
     task = request.form.get('task', '')
     TodoBuild.delete_task(task)
-    return redirect(url_for('home'))
+    return redirect(request.referrer or url_for('home'))
 
 
 @app.route('/complete_task', methods=['POST'])
 def complete_task():
     task = request.form.get('task', '')
     TodoBuild.complete_task(task)
-    return redirect(url_for('home'))
+    return redirect(request.referrer or url_for('home'))
 
 
 @app.route('/delete_complete_task', methods=['POST'])
 def delete_complete_task():
     task = request.form.get('task', '')
     TodoBuild.delete_task_complete(task)
-    return redirect(url_for('home'))
+    return redirect(request.referrer or url_for('home'))
 
 
 @app.route('/new_habit', methods=['POST'])
@@ -192,14 +240,14 @@ def new_habit():
     habit = request.form.get('habit', '')
     frequency = request.form.get('frequency', '')
     HabitBuild.add_habit(session['select_date'], habit, frequency)
-    return redirect(url_for('home'))
+    return redirect(request.referrer or url_for('home'))
 
 
 @app.route('/delete_habit', methods=['POST'])
 def delete_habit():
     habit_id = request.form.get('habit', '')
     HabitBuild.delete_habit(habit_id)
-    return redirect(url_for('home'))
+    return redirect(request.referrer or url_for('home'))
 
 
 @app.route('/complete_habit', methods=['POST'])
@@ -207,7 +255,7 @@ def complete_habit():
     habit_id = request.form.get('habit', '')
     date = request.form.get('date', session.get('select_date', ''))
     HabitBuild.complete_habit_for_date(habit_id, date)
-    return redirect(url_for('home'))
+    return redirect(request.referrer or url_for('home'))
 
 
 @app.route('/collapse_todo', methods=['POST'])
@@ -216,7 +264,7 @@ def collapse_todo():
         session['collapse_todo'] = False
     else:
         session['collapse_todo'] = True
-    return redirect(url_for('home'))
+    return redirect(request.referrer or url_for('home'))
 
 
 @app.route('/collapse_todo_complete', methods=['POST'])
@@ -225,7 +273,7 @@ def collapse_todo_complete():
         session['collapse_todo_complete'] = False
     else:
         session['collapse_todo_complete'] = True
-    return redirect(url_for('home'))
+    return redirect(request.referrer or url_for('home'))
 
 
 @app.route('/edit_task', methods=['POST'])
@@ -239,7 +287,7 @@ def edit_task():
     new_value = request.form.get('new_task', '')
     if task_id and new_value:
         TodoBuild.edit_task(task_id, new_value)
-    return redirect(url_for('home'))
+    return redirect(request.referrer or url_for('home'))
 
 
 @app.route('/new_job', methods=['POST'])
@@ -290,12 +338,5 @@ def collapse_job_applications():
     return redirect(request.referrer or url_for('home'))
 
 
-@app.route('/select_date', methods=['POST'])
-def select_date():
-    date = request.form.get('select_date', '')
-    session['select_date'] = date
-    return redirect(url_for('home'))
-
-
 if __name__ == '__main__':
-    app.run(port=8000, debug=False)
+    app.run(port=8000, debug=True)

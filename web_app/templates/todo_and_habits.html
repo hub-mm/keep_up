@@ -1,4 +1,4 @@
-<!-- ./web_app/templates/job_applications.html -->
+<!-- ./web_app/templates/todo_and_habits.html -->
 {% extends 'base.html' %}
 
 {% block head %}
@@ -11,7 +11,10 @@
     {% block header %}
         {{ super() }}
     {% endblock %}
-    {% block job_applications %}
+    {% block todo %}
+        {{ super() }}
+    {% endblock %}
+    {% block completed %}
         {{ super() }}
     {% endblock %}
 {% endblock %}
